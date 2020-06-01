@@ -30,7 +30,7 @@ Context API helps pass state from parent to child without prop drilling.
 
 Actions - calls that you can trigger from events in your components, sends payload.
 Reducers - where initial state is held, modifies data.
-Store - setup in react where data is stored for the application 
+Store - setup in react where data is stored for the application.
 
 - [ ] What is the difference between Application state and Component state? When would be a good time to use one over the other?
 
