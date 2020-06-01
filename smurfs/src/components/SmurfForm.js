@@ -1,81 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import { connect } from 'react-redux';
-import { getSmurf, addSmurf } from '../actions';
+import { postData } from '../actions';
 
-const SmurfForm = (props) => {
-   const [newSmurf, setNewSmurf] = useState({
-       name: '',
-       age: '',
-       height: ''
-   });
+const SmurfForm = props => {
+    const [name, setName] = useState('');
+    const [age, setAge] = useState('');
+    const [height, setHeight] = useState('');
 
-   const handleSubmit = event => {
-       event.preventDefault();
-       props.addSmurf(newSmurf);
-    };
+    const nameHandler = e => {
+        setName(e.target.value)
+    }
 
-   const handleChanges = event => {
-       setNewSmurf({
-           ...newSmurf,
-           [event.target.name]: event.target.value
-       });
-   };
+    const ageHandler = e => {
+        setAge(e.target.value)
+    }
 
-   return (
-       <div>
-           <form onSubmit = {(event => {handleSubmit(event)})}>
-               <div>
-                   <input
-                        placeholder='Name'
-                        type='text'
-                        name='name'
-                        onChange={(event => {handleChanges(event)})}
-                        value={newSmurf.name}
-                    />
-               </div>
-
-               <div>
-                    <input
-                        placeholder='Age'
-                        type='text'
-                        name='age'
-                        onChange={(event => {handleChanges(event)})}
-                        value={newSmurf.age}
-                    />
-               </div>
-
-               <div>
-                    <input
-                        placeholder='Height'
-                        type='text'
-                        name='height'
-                        onChange={(event => {handleChanges(event)})}
-                        value={newSmurf.height}
-                    />
-               </div>
-
-               <button onClick={() => props.getSmurf(newSmurf)}>Create Smurfiness</button>
-           </form>
-
-           <button onClick={props.getSmurf}>All the Smurfs</button>
-           {props.smurf & !props.isFetching && props.smurf.map(item => {
-               return (
-                   <div>
-                       <p>{item.name}</p>
-                       <p>{item.age}</p>
-                       <p>{item.height}</p>
-                    </div>
-               )
-           })}
-       </div>
-   );
-};
+    const heightHandler = e => {
+        setHeight(e.target.value)
+    }
+    
+    return (
+        <div>
+            <input onChange={nameHandler} type='text' placeholder='Name'/>
+            <input onChange={ageHandler} type='text' placeholder='Age'/>
+            <input onChange={heightHandler} type='text' placeholder='Height'/>
+            <button onClick={() => props.postData(name, age, height)}>Create Smurfiness</button>
+        </div>
+    )
+}
 
 const mapStateToProps = state => {
-    return({
-        smurf: state.smurf,
-        isFetching: state.isFetching
-    })
-};
+    return {
+        isLoading: state.isLoading,
+        smurfs: state.smurfs,
+    }
+}
 
-export default connect (mapStateToProps, {getSmurf, addSmurf})(SmurfForm);
+export default connect(
+    mapStateToProps,
+    { postData }
+)(SmurfForm);
